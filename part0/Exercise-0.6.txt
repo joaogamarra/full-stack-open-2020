@@ -1,0 +1,8 @@
+title Exercise 0.6
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: 201 Response {"message":"note created"}
+
+note over browser:
+javascript appends the new note to the list
+end note
