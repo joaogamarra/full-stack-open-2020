@@ -1,13 +1,14 @@
-const Persons = ({ personsToShow }) => {
-  return (
-    <>
-      {personsToShow.map(({ name, number }) => (
-        <p key={name}>
-          {name} {number}
-        </p>
-      ))}
-    </>
-  );
-};
+const Persons = ({ personsToShow, handleDelete }) => {
+	return (
+		<>
+			{personsToShow.map(({ id, name, number }) => (
+				<p key={name}>
+					{name} {number}
+					<button onClick={() => handleDelete(id, name)}>delete</button>
+				</p>
+			))}
+		</>
+	)
+}
 
-export default Persons;
+export default Persons
