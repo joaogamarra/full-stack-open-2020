@@ -54,7 +54,7 @@ const App = () => {
 					setNewNumber('')
 				})
 				.catch((error) => {
-					handleNotification('error', error.response.data.error)
+					console.log(error.response.data)
 				})
 		}
 	}

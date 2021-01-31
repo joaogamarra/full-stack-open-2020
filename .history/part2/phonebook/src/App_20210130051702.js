@@ -45,17 +45,12 @@ const App = () => {
 				number: newNumber,
 			}
 
-			personsService
-				.create(personObject)
-				.then((response) => {
-					setPersons(persons.concat(personObject))
-					handleNotification('success', `Added ${newName}`)
-					setNewName('')
-					setNewNumber('')
-				})
-				.catch((error) => {
-					handleNotification('error', error.response.data.error)
-				})
+			personsService.create(personObject).then((response) => {
+				setPersons(persons.concat(personObject))
+				handleNotification('success', `Added ${newName}`)
+				setNewName('')
+				setNewNumber('')
+			})
 		}
 	}
 
