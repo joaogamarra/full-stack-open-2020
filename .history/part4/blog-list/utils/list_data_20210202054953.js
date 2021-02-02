@@ -86,30 +86,9 @@ const newBlog = {
 	likes: 0,
 }
 
-const newBlogNoLikes = {
-	title: 'Type wars',
-	author: 'Robert C. Martin',
-	url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-}
-
-const newBlogNoUrl = {
-	title: 'TDD harms architecture',
-	author: 'Robert C. Martin',
-	likes: 0,
-}
-
-const newBlogNoTitle = {
-	author: 'Robert C. Martin',
-	url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-	likes: 0,
-}
-
 module.exports = {
 	listWithOneBlog,
 	listWithMultipleBlogs,
 	initialBlogs,
 	newBlog,
-	newBlogNoLikes,
-	newBlogNoUrl,
-	newBlogNoTitle,
 }

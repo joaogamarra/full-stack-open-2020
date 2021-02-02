@@ -110,6 +110,4 @@ module.exports = {
 	initialBlogs,
 	newBlog,
 	newBlogNoLikes,
-	newBlogNoUrl,
-	newBlogNoTitle,
 }
