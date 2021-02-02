@@ -31,18 +31,6 @@ blogRouter.get('/:id', async (request, response) => {
 	}
 })
 
-blogRouter.put('/:id', async (request, response) => {
-	const { body } = request
-	const blog = await Blog.findById(request.params.id)
-	if (blog) {
-		blog.likes = body.likes
-		await blog.save()
-		response.json(blog)
-	} else {
-		response.status(404).end()
-	}
-})
-
 blogRouter.delete('/:id', async (request, response) => {
 	await Blog.findByIdAndRemove(request.params.id)
 	response.status(204).end()
