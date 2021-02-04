@@ -46,7 +46,7 @@ describe('blog api test', () => {
 		expect(response.body[0].id).toBeDefined()
 	})
 
-	test('a valid blog can be added', async () => {
+	test.only('a valid blog can be added', async () => {
 		await api
 			.post('/api/blogs')
 			.set('Authorization', testToken)
@@ -65,7 +65,6 @@ describe('blog api test', () => {
 	test('a blog with no likes defaults to 0', async () => {
 		await api
 			.post('/api/blogs')
-			.set('Authorization', testToken)
 			.send(newBlogNoLikes)
 			.expect(201)
 			.expect('Content-Type', /application\/json/)
@@ -78,7 +77,6 @@ describe('blog api test', () => {
 	test('a blog with no title', async () => {
 		await api
 			.post('/api/blogs')
-			.set('Authorization', testToken)
 			.send(newBlogNoTitle)
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
@@ -91,22 +89,8 @@ describe('blog api test', () => {
 	test('a blog with no url', async () => {
 		await api
 			.post('/api/blogs')
-			.set('Authorization', testToken)
 			.send(newBlogNoUrl)
 			.expect(400)
-			.expect('Content-Type', /application\/json/)
-
-		const response = await api.get('/api/blogs')
-
-		expect(response.body).toHaveLength(initialBlogs.length)
-	})
-
-	test.only('a blog with no token', async () => {
-		await api
-			.post('/api/blogs')
-			.set('Authorization', '')
-			.send(newBlog)
-			.expect(401)
 			.expect('Content-Type', /application\/json/)
 
 		const response = await api.get('/api/blogs')

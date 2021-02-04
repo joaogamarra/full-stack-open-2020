@@ -46,7 +46,7 @@ describe('blog api test', () => {
 		expect(response.body[0].id).toBeDefined()
 	})
 
-	test('a valid blog can be added', async () => {
+	test.only('a valid blog can be added', async () => {
 		await api
 			.post('/api/blogs')
 			.set('Authorization', testToken)
@@ -101,7 +101,7 @@ describe('blog api test', () => {
 		expect(response.body).toHaveLength(initialBlogs.length)
 	})
 
-	test.only('a blog with no token', async () => {
+	test('a blog with no token', async () => {
 		await api
 			.post('/api/blogs')
 			.set('Authorization', '')

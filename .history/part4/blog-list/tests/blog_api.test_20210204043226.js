@@ -101,7 +101,7 @@ describe('blog api test', () => {
 		expect(response.body).toHaveLength(initialBlogs.length)
 	})
 
-	test.only('a blog with no token', async () => {
+	test('a blog with no token', async () => {
 		await api
 			.post('/api/blogs')
 			.set('Authorization', '')
