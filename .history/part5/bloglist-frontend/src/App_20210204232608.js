@@ -11,12 +11,12 @@ const App = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
-	console.log('file: App.js ~ line 14 ~ user', user)
 	const [notificationStatus, setNotificationStatus] = useState(null)
 	const [notificationMessage, setNotificationMessage] = useState(null)
-	const orderedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
-	const blogFormRef = React.createRef()
+	const [newBlogTitle, setNewBlogTitle] = useState('')
+	const [newBlogAuthor, setNewBlogAuthor] = useState('')
+	const [newBlogUrl, setNewBlogUrl] = useState('')
 
 	useEffect(() => {
 		async function getBlogs() {
@@ -67,37 +67,24 @@ const App = () => {
 		}, 4000)
 	}
 
-	const createBlog = async (blogObject) => {
+	const addBlog = async (event) => {
+		event.preventDefault()
+
 		try {
-			blogFormRef.current.toggleVisibility()
+			const blogObject = {
+				title: newBlogTitle,
+				author: newBlogAuthor,
+				url: newBlogUrl,
+			}
+
 			const returnedBlog = await blogService.create(blogObject)
 			setBlogs(blogs.concat(returnedBlog))
 			handleNotification('success', `a new blog ${returnedBlog.title} added`)
+			setNewBlogTitle('')
+			setNewBlogAuthor('')
+			setNewBlogUrl('')
 		} catch (exception) {
 			handleNotification('error', exception)
-		}
-	}
-
-	const handleLike = async (id) => {
-		console.log(id)
-		try {
-			const blog = blogs.find((b) => b.id === id)
-			const changedBlog = { ...blog, likes: blog.likes + 1 }
-			await blogService.update(id, changedBlog)
-			setBlogs(blogs.map((item) => (item.id !== id ? item : changedBlog)))
-		} catch (exception) {
-			handleNotification('error', exception)
-		}
-	}
-
-	const handleRemove = async (id, title, author) => {
-		if (window.confirm(`Remove blog ${title} by ${author}`)) {
-			try {
-				await blogService.remove(id)
-				setBlogs(blogs.filter((b) => b.id !== id))
-			} catch (exception) {
-				handleNotification('error', exception)
-			}
 		}
 	}
 
@@ -138,18 +125,20 @@ const App = () => {
 						{user.name} logged-in <button onClick={handleLogout}>logout</button>
 					</p>
 					<Notification status={notificationStatus} message={notificationMessage} />
-					<Toggable buttonLabel='new blog' ref={blogFormRef}>
-						<BlogForm createBlog={createBlog} />
-					</Toggable>
-
-					{orderedBlogs.map((blog) => (
-						<Blog
-							key={blog.id}
-							blog={blog}
-							handleLike={handleLike}
-							handleRemove={handleRemove}
-							username={user.username}
+					<Togglable buttonLabel='new blog'>
+						<BlogForm
+							handleSubmit={addBlog}
+							title={newBlogTitle}
+							author={newBlogAuthor}
+							url={newBlogUrl}
+							handleTitleChange={({ target }) => setNewBlogTitle(target.value)}
+							handleAuthorChange={({ target }) => setNewBlogAuthor(target.value)}
+							handleUrlChange={({ target }) => setNewBlogUrl(target.value)}
 						/>
+					</Togglable>
+
+					{blogs.map((blog) => (
+						<Blog key={blog.id} blog={blog} />
 					))}
 				</div>
 			)}

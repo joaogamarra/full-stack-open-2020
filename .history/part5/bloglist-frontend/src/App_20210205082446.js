@@ -11,7 +11,6 @@ const App = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
-	console.log('file: App.js ~ line 14 ~ user', user)
 	const [notificationStatus, setNotificationStatus] = useState(null)
 	const [notificationMessage, setNotificationMessage] = useState(null)
 	const orderedBlogs = blogs.sort((a, b) => b.likes - a.likes)
@@ -94,9 +93,9 @@ const App = () => {
 		if (window.confirm(`Remove blog ${title} by ${author}`)) {
 			try {
 				await blogService.remove(id)
-				setBlogs(blogs.filter((b) => b.id !== id))
+				//	setBlogs(blogs.filter((b) => b.id !== id))
 			} catch (exception) {
-				handleNotification('error', exception)
+				//handleNotification('error', exception)
 			}
 		}
 	}
@@ -143,13 +142,7 @@ const App = () => {
 					</Toggable>
 
 					{orderedBlogs.map((blog) => (
-						<Blog
-							key={blog.id}
-							blog={blog}
-							handleLike={handleLike}
-							handleRemove={handleRemove}
-							username={user.username}
-						/>
+						<Blog key={blog.id} blog={blog} handleLike={handleLike} handleRemove={handleRemove} />
 					))}
 				</div>
 			)}

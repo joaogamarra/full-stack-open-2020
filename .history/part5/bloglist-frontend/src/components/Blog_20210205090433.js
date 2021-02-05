@@ -1,9 +1,13 @@
 import React from 'react'
 import Toggable from './Toggable'
 const Blog = ({ blog, handleLike, handleRemove, username }) => {
+	const isUser = username === blog.user.username
 	let removeButton
 
-	if (username === blog.user.username) {
+	console.log(username)
+	console.log(blog.user.id)
+
+	if (isUser) {
 		removeButton = <button onClick={() => handleRemove(blog.id, blog.title, blog.author)}>Remove</button>
 	}
 

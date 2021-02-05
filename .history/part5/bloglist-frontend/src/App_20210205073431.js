@@ -11,10 +11,8 @@ const App = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
-	console.log('file: App.js ~ line 14 ~ user', user)
 	const [notificationStatus, setNotificationStatus] = useState(null)
 	const [notificationMessage, setNotificationMessage] = useState(null)
-	const orderedBlogs = blogs.sort((a, b) => b.likes - a.likes)
 
 	const blogFormRef = React.createRef()
 
@@ -67,40 +65,6 @@ const App = () => {
 		}, 4000)
 	}
 
-	const createBlog = async (blogObject) => {
-		try {
-			blogFormRef.current.toggleVisibility()
-			const returnedBlog = await blogService.create(blogObject)
-			setBlogs(blogs.concat(returnedBlog))
-			handleNotification('success', `a new blog ${returnedBlog.title} added`)
-		} catch (exception) {
-			handleNotification('error', exception)
-		}
-	}
-
-	const handleLike = async (id) => {
-		console.log(id)
-		try {
-			const blog = blogs.find((b) => b.id === id)
-			const changedBlog = { ...blog, likes: blog.likes + 1 }
-			await blogService.update(id, changedBlog)
-			setBlogs(blogs.map((item) => (item.id !== id ? item : changedBlog)))
-		} catch (exception) {
-			handleNotification('error', exception)
-		}
-	}
-
-	const handleRemove = async (id, title, author) => {
-		if (window.confirm(`Remove blog ${title} by ${author}`)) {
-			try {
-				await blogService.remove(id)
-				setBlogs(blogs.filter((b) => b.id !== id))
-			} catch (exception) {
-				handleNotification('error', exception)
-			}
-		}
-	}
-
 	const loginForm = () => (
 		<form onSubmit={handleLogin}>
 			<div>
@@ -125,6 +89,29 @@ const App = () => {
 		</form>
 	)
 
+	const createBlog = async (blogObject) => {
+		try {
+			blogFormRef.current.toggleVisibility()
+			const returnedBlog = await blogService.create(blogObject)
+			setBlogs(blogs.concat(returnedBlog))
+			handleNotification('success', `a new blog ${returnedBlog.title} added`)
+		} catch (exception) {
+			handleNotification('error', exception)
+		}
+	}
+
+	const handleLike = async (id) => {
+		console.log(id)
+		try {
+			const blog = blogs.find((b) => b.id === id)
+			const changedBlog = { ...blog, likes: 2 }
+			await blogService.update(id, changedBlog)
+			setBlogs(blogs.map((item) => (item.id !== id ? item : changedBlog)))
+		} catch (exception) {
+			handleNotification('error', exception)
+		}
+	}
+
 	return (
 		<div>
 			{user === null ? (
@@ -142,14 +129,8 @@ const App = () => {
 						<BlogForm createBlog={createBlog} />
 					</Toggable>
 
-					{orderedBlogs.map((blog) => (
-						<Blog
-							key={blog.id}
-							blog={blog}
-							handleLike={handleLike}
-							handleRemove={handleRemove}
-							username={user.username}
-						/>
+					{blogs.map((blog) => (
+						<Blog key={blog.id} blog={blog} handleLike={handleLike} />
 					))}
 				</div>
 			)}

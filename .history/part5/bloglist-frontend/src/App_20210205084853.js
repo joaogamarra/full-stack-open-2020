@@ -143,13 +143,7 @@ const App = () => {
 					</Toggable>
 
 					{orderedBlogs.map((blog) => (
-						<Blog
-							key={blog.id}
-							blog={blog}
-							handleLike={handleLike}
-							handleRemove={handleRemove}
-							username={user.username}
-						/>
+						<Blog key={blog.id} blog={blog} handleLike={handleLike} handleRemove={handleRemove} />
 					))}
 				</div>
 			)}
