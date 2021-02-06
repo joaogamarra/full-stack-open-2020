@@ -11,6 +11,7 @@ const App = () => {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
+	console.log('file: App.js ~ line 14 ~ user', user)
 	const [notificationStatus, setNotificationStatus] = useState(null)
 	const [notificationMessage, setNotificationMessage] = useState(null)
 	const orderedBlogs = blogs.sort((a, b) => b.likes - a.likes)
@@ -122,9 +123,7 @@ const App = () => {
 					onChange={({ target }) => setPassword(target.value)}
 				/>
 			</div>
-			<button id='login-btn' type='submit'>
-				login
-			</button>
+			<button type='submit'>login</button>
 		</form>
 	)
 
