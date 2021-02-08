@@ -22,6 +22,8 @@ const anecdoteReducer = (state = [], action) => {
 export const initializeAnecdotes = () => {
 	return async (dispatch) => {
 		const anecdotes = await anecdotesService.getAll()
+
+		console.log(anecdotes)
 		dispatch({
 			type: 'INIT_ANECDOTES',
 			data: anecdotes,
@@ -29,30 +31,24 @@ export const initializeAnecdotes = () => {
 	}
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = ({ content }) => {
+	console.log('file: anecdoteReducer.js ~ line 35 ~ content', content)
 	return async (dispatch) => {
 		const newAnecdote = await anecdotesService.createNew(content)
 
 		dispatch({
 			type: 'NEW_ANECDOTE',
-			data: newAnecdote,
+			data: {
+				newAnecdote,
+			},
 		})
 	}
 }
 
-export const addVote = (anecdote) => {
-	return async (dispatch) => {
-		const updatedAnecdote = {
-			...anecdote,
-			votes: anecdote.votes + 1,
-		}
-
-		const newAnecdote = await anecdotesService.update(updatedAnecdote)
-		const { id } = newAnecdote
-		dispatch({
-			type: 'ADD_VOTE',
-			data: { id },
-		})
+export const addVote = (id) => {
+	return {
+		type: 'ADD_VOTE',
+		data: { id },
 	}
 }
 

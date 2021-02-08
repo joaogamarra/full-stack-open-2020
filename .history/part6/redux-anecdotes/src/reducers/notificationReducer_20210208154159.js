@@ -1,5 +1,3 @@
-let notificationInterval = null
-
 const notificationReducer = (state = '', action) => {
 	switch (action.type) {
 		case 'DISPLAY_NOTIFICATION':
@@ -12,7 +10,6 @@ const notificationReducer = (state = '', action) => {
 }
 
 export const setNotification = (content, time) => {
-	clearTimeout(notificationInterval)
 	return async (dispatch) => {
 		dispatch({
 			type: 'DISPLAY_NOTIFICATION',
@@ -20,9 +17,6 @@ export const setNotification = (content, time) => {
 				message: content,
 			},
 		})
-		notificationInterval = setTimeout(() => {
-			dispatch(removeNotification())
-		}, time * 1000)
 	}
 }
 

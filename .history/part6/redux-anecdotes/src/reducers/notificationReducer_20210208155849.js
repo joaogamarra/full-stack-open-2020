@@ -20,6 +20,7 @@ export const setNotification = (content, time) => {
 				message: content,
 			},
 		})
+		console.log(time * 1000)
 		notificationInterval = setTimeout(() => {
 			dispatch(removeNotification())
 		}, time * 1000)

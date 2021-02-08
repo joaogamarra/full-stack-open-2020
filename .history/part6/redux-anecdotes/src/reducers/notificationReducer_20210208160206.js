@@ -12,7 +12,6 @@ const notificationReducer = (state = '', action) => {
 }
 
 export const setNotification = (content, time) => {
-	clearTimeout(notificationInterval)
 	return async (dispatch) => {
 		dispatch({
 			type: 'DISPLAY_NOTIFICATION',

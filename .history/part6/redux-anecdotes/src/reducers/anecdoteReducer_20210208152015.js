@@ -46,8 +46,10 @@ export const addVote = (anecdote) => {
 			...anecdote,
 			votes: anecdote.votes + 1,
 		}
+		console.log('file: anecdoteReducer.js ~ line 47 ~ updatedAnecdote', updatedAnecdote)
 
 		const newAnecdote = await anecdotesService.update(updatedAnecdote)
+		console.log('file: anecdoteReducer.js ~ line 51 ~ newAnecdote', newAnecdote)
 		const { id } = newAnecdote
 		dispatch({
 			type: 'ADD_VOTE',

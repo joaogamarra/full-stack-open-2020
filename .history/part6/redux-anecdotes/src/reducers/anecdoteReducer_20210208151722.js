@@ -41,16 +41,19 @@ export const createAnecdote = (content) => {
 }
 
 export const addVote = (anecdote) => {
+	console.log('file: anecdoteReducer.js ~ line 44 ~ anecdote', anecdote)
 	return async (dispatch) => {
 		const updatedAnecdote = {
 			...anecdote,
 			votes: anecdote.votes + 1,
 		}
+		console.log('file: anecdoteReducer.js ~ line 47 ~ updatedAnecdote', updatedAnecdote)
 
 		const newAnecdote = await anecdotesService.update(updatedAnecdote)
+		console.log('file: anecdoteReducer.js ~ line 51 ~ newAnecdote', newAnecdote)
 		const { id } = newAnecdote
 		dispatch({
-			type: 'ADD_VOTE',
+			type: 'NEW_ANECDOTE',
 			data: { id },
 		})
 	}

@@ -46,11 +46,10 @@ export const addVote = (anecdote) => {
 			...anecdote,
 			votes: anecdote.votes + 1,
 		}
-
 		const newAnecdote = await anecdotesService.update(updatedAnecdote)
 		const { id } = newAnecdote
 		dispatch({
-			type: 'ADD_VOTE',
+			type: 'NEW_ANECDOTE',
 			data: { id },
 		})
 	}

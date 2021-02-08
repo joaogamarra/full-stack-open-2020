@@ -1,35 +1,33 @@
-let notificationInterval = null
+let timer = null
 
 const notificationReducer = (state = '', action) => {
 	switch (action.type) {
-		case 'DISPLAY_NOTIFICATION':
-			return action.data
-		case 'REMOVE_NOTIFICATION':
-			return ''
+		case 'SET_NOTIF':
+			return action.message
+		case 'REMOVE_NOTIF':
+			return null
 		default:
 			return state
 	}
 }
 
 export const setNotification = (content, time) => {
-	clearTimeout(notificationInterval)
+	if (timer != null) {
+		clearInterval()
+	}
 	return async (dispatch) => {
 		dispatch({
-			type: 'DISPLAY_NOTIFICATION',
-			data: {
-				message: content,
-			},
+			type: 'SET_NOTIF',
+			message: content,
 		})
-		notificationInterval = setTimeout(() => {
+		timer = setTimeout(() => {
 			dispatch(removeNotification())
 		}, time * 1000)
 	}
 }
 
 export const removeNotification = () => {
-	return {
-		type: 'REMOVE_NOTIFICATION',
-	}
+	return { type: 'REMOVE_NOTIF' }
 }
 
 export default notificationReducer
