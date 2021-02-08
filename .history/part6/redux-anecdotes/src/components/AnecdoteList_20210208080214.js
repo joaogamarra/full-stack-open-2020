@@ -6,19 +6,19 @@ const AnecdoteList = () => {
 	const dispatch = useDispatch()
 
 	const anecdotes = useSelector((state) => state.anecdotes)
-	const filterValue = useSelector((state) => state.filter.value)
+	const filter = useSelector((state) => state.filter.value)
 
 	const filteredAnecdotes = () => {
-		if (filterValue !== undefined && anecdotes) {
-			return anecdotes.filter((anecdote) => {
-				return anecdote.content.toLowerCase().includes(filterValue.toLowerCase())
+		if (filter !== undefined && anecdotes) {
+			anecdotes.filter((anecdote) => {
+				return anecdote.content.toLowerCase().includes(filter.toLowerCase())
 			})
 		}
-
 		return anecdotes
 	}
+	console.log(filteredAnecdotes())
 
-	const orderedAnecdotes = [...filteredAnecdotes()].sort((a, b) => b.votes - a.votes)
+	const orderedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes)
 
 	const vote = (id, content) => {
 		dispatch(addVote(id))

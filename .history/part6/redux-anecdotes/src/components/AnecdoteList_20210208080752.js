@@ -10,15 +10,18 @@ const AnecdoteList = () => {
 
 	const filteredAnecdotes = () => {
 		if (filterValue !== undefined && anecdotes) {
+			console.log(filterValue)
 			return anecdotes.filter((anecdote) => {
+				console.log(anecdote.content.toLowerCase())
 				return anecdote.content.toLowerCase().includes(filterValue.toLowerCase())
 			})
+		} else {
+			return anecdotes
 		}
-
-		return anecdotes
 	}
+	console.log(filteredAnecdotes())
 
-	const orderedAnecdotes = [...filteredAnecdotes()].sort((a, b) => b.votes - a.votes)
+	const orderedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes)
 
 	const vote = (id, content) => {
 		dispatch(addVote(id))
