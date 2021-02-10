@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs 
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MDFlNjMzZjllNTU1MjRhZmUxMjMzNTgiLCJpYXQiOjE2MTI2MDQyODh9.4AkbS-p3OdPgjLgrl1tK4jIasD1Vny8pbQRSoxyDuIM
+
+{ 
+    "title": "token test 90000000", 
+    "author": "124124124",
+    "url": "test"
+}
