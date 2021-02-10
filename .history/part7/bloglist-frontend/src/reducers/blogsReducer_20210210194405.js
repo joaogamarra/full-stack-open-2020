@@ -1,0 +1,57 @@
+import blogsService from '../services/blogs'
+
+const blogsReducer = (state = [], action) => {
+	switch (action.type) {
+		case 'INIT_BLOGS':
+			return action.data
+		case 'ADD_VOTE':
+			const id = action.data.id
+			const blogToChange = state.find((b) => b.id === id)
+			const changedBlog = {
+				...blogToChange,
+				likes: blogToChange.likes + 1,
+			}
+			return state.map((blog) => (blog.id !== id ? blog : changedBlog))
+		default:
+			return state
+	}
+}
+
+export const initializeBlogs = () => {
+	return async (dispatch) => {
+		const blogs = await blogsService.getAll()
+		dispatch({
+			type: 'INIT_BLOGS',
+			data: blogs,
+		})
+	}
+}
+
+export const likeBlog = (blog) => {
+	return async (dispatch) => {
+		const updatedBlog = {
+			...blog,
+			likes: blog.likes + 1,
+		}
+
+		const newBlog = await blogsService.update(updatedBlog)
+		const { id } = newBlog
+		dispatch({
+			type: 'ADD_VOTE',
+			data: { id },
+		})
+	}
+}
+
+export const removeBlog = async (blog) => {
+	if (window.confirm(`Remove blog ${title} by ${author}`)) {
+		try {
+			await blogService.remove(id)
+			setBlogs(blogs.filter((b) => b.id !== id))
+		} catch (exception) {
+			dispatch(setNotification(exception, 5))
+		}
+	}
+}
+
+export default blogsReducer
