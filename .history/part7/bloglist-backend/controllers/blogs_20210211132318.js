@@ -36,7 +36,7 @@ blogRouter.post('/', async (request, response) => {
 })
 
 blogRouter.get('/:id', async (request, response) => {
-	const blog = await Blog.findById(request.params.id)
+	const blog = await Blog.findById(request.params.id).populate('comments')
 	if (blog) {
 		response.json(blog)
 	} else {
@@ -72,11 +72,10 @@ blogRouter.delete('/:id', async (request, response) => {
 
 blogRouter.post('/:id/comments', async (request, response) => {
 	const { comment } = request.body
-	const { id } = request.params
 
 	if (!comment) return response.status(400).json({ error: 'Comment is required' })
 
-	const blogComment = new BlogComment({ comment, blog: id })
+	const blogComment = new BlogComment({ comment, blog: request.params.id })
 
 	const blogCommentSave = await blogComment.save()
 

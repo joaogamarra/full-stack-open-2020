@@ -76,9 +76,15 @@ blogRouter.post('/:id/comments', async (request, response) => {
 
 	if (!comment) return response.status(400).json({ error: 'Comment is required' })
 
+	const blog = await Blog.findById(id)
+
 	const blogComment = new BlogComment({ comment, blog: id })
 
+	console.log(blog)
+
 	const blogCommentSave = await blogComment.save()
+	blog.blogcomment = blog.blogcomment.concat(blogCommentSave._id)
+	await blog.save()
 
 	response.status(201).json(blogCommentSave)
 })

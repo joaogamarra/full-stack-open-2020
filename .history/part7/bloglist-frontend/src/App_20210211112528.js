@@ -9,7 +9,6 @@ import Toggable from './components/Toggable'
 import Users from './components/Users'
 import UserDetail from './components/UserDetail'
 import BlogDetail from './components/BlogDetail'
-import Menu from './components/Menu'
 import { useSelector, useDispatch } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { setLoggedUser } from './reducers/loginReducer'
@@ -112,7 +111,6 @@ const App = () => {
 				</div>
 			) : (
 				<div>
-					<Menu />
 					<p>
 						{user.name} logged-in <button onClick={handleLogout}>logout</button>
 					</p>

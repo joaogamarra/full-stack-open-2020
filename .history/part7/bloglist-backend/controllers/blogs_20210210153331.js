@@ -1,7 +1,6 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const BlogComment = require('../models/blogComment')
 const jwt = require('jsonwebtoken')
 
 blogRouter.get('/', async (request, response) => {
@@ -68,28 +67,6 @@ blogRouter.delete('/:id', async (request, response) => {
 
 	await Blog.findByIdAndRemove(request.params.id)
 	response.status(204).end()
-})
-
-blogRouter.post('/:id/comments', async (request, response) => {
-	const { comment } = request.body
-	const { id } = request.params
-
-	if (!comment) return response.status(400).json({ error: 'Comment is required' })
-
-	const blogComment = new BlogComment({ comment, blog: id })
-
-	const blogCommentSave = await blogComment.save()
-
-	response.status(201).json(blogCommentSave)
-})
-
-blogRouter.get('/:id/comments', async (request, response) => {
-	const comments = await BlogComment.find({ blog: request.params.id })
-	if (comments) {
-		response.json(comments)
-	} else {
-		response.status(404).end()
-	}
 })
 
 module.exports = blogRouter

@@ -14,7 +14,7 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
 
 	return (
 		<div className='blog-item'>
-			<Link to={`/blogs/${blog.id}`}>
+			<Link To={`/blogs/${blog.id}`}>
 				{blog.title} {blog.author}
 			</Link>
 			<Toggable buttonLabel='View'>

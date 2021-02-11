@@ -5,7 +5,7 @@ const BlogComment = require('../models/blogComment')
 const jwt = require('jsonwebtoken')
 
 blogRouter.get('/', async (request, response) => {
-	const blogs = await Blog.find({}).populate('user')
+	const blogs = await Blog.find({}).populate('user').populate('comments')
 	if (blogs) {
 		response.json(blogs)
 	} else {
@@ -36,7 +36,7 @@ blogRouter.post('/', async (request, response) => {
 })
 
 blogRouter.get('/:id', async (request, response) => {
-	const blog = await Blog.findById(request.params.id)
+	const blog = await Blog.findById(request.params.id).populate('blogComment')
 	if (blog) {
 		response.json(blog)
 	} else {
@@ -72,24 +72,14 @@ blogRouter.delete('/:id', async (request, response) => {
 
 blogRouter.post('/:id/comments', async (request, response) => {
 	const { comment } = request.body
-	const { id } = request.params
 
 	if (!comment) return response.status(400).json({ error: 'Comment is required' })
 
-	const blogComment = new BlogComment({ comment, blog: id })
+	const blogComment = new BlogComment({ comment, blog: request.params.id })
 
 	const blogCommentSave = await blogComment.save()
 
 	response.status(201).json(blogCommentSave)
-})
-
-blogRouter.get('/:id/comments', async (request, response) => {
-	const comments = await BlogComment.find({ blog: request.params.id })
-	if (comments) {
-		response.json(comments)
-	} else {
-		response.status(404).end()
-	}
 })
 
 module.exports = blogRouter

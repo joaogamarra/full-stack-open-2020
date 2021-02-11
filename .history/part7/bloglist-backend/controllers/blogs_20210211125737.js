@@ -72,11 +72,10 @@ blogRouter.delete('/:id', async (request, response) => {
 
 blogRouter.post('/:id/comments', async (request, response) => {
 	const { comment } = request.body
-	const { id } = request.params
 
 	if (!comment) return response.status(400).json({ error: 'Comment is required' })
 
-	const blogComment = new BlogComment({ comment, blog: id })
+	const blogComment = new BlogComment({ comment, blog: request.params.id })
 
 	const blogCommentSave = await blogComment.save()
 
@@ -84,6 +83,7 @@ blogRouter.post('/:id/comments', async (request, response) => {
 })
 
 blogRouter.get('/:id/comments', async (request, response) => {
+	console.log(request.params.id)
 	const comments = await BlogComment.find({ blog: request.params.id })
 	if (comments) {
 		response.json(comments)
