@@ -84,6 +84,7 @@ const resolvers = {
 			return Book.find({}).populate('author')
 		},
 		me: (root, args, context) => {
+			console.log(context)
 			return context.currentUser
 		},
 	},
@@ -92,10 +93,7 @@ const resolvers = {
 		addBook: async (root, args) => {
 			const authorId = mongoose.Types.ObjectId()
 			const book = new Book({ ...args, author: authorId })
-
-			if (!currentUser) {
-				throw new AuthenticationError('not authenticated')
-			}
+			console.log(authorId)
 
 			author = new Author({
 				name: args.author,
@@ -118,15 +116,8 @@ const resolvers = {
 
 		editAuthor: async (root, { name, setBornTo }) => {
 			const author = await Author.findOne({ name: name })
-
-			if (!currentUser) {
-				throw new AuthenticationError('not authenticated')
-			}
-
 			if (!author) return null
-
 			author.born = setBornTo
-
 			try {
 				await author.save()
 			} catch (error) {

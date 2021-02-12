@@ -2,7 +2,6 @@ const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const mongoose = require('mongoose')
 const Author = require('./models/author')
 const Book = require('./models/book')
-const User = require('./models/user')
 
 const MONGODB_URI =
 	'mongodb+srv://fullstack:nSeXBdwdxp3a321i@cluster0.wbrto.mongodb.net/phonebook?retryWrites=true&w=majority'
@@ -83,19 +82,13 @@ const resolvers = {
 
 			return Book.find({}).populate('author')
 		},
-		me: (root, args, context) => {
-			return context.currentUser
-		},
 	},
 
 	Mutation: {
 		addBook: async (root, args) => {
 			const authorId = mongoose.Types.ObjectId()
 			const book = new Book({ ...args, author: authorId })
-
-			if (!currentUser) {
-				throw new AuthenticationError('not authenticated')
-			}
+			console.log(authorId)
 
 			author = new Author({
 				name: args.author,
@@ -118,15 +111,8 @@ const resolvers = {
 
 		editAuthor: async (root, { name, setBornTo }) => {
 			const author = await Author.findOne({ name: name })
-
-			if (!currentUser) {
-				throw new AuthenticationError('not authenticated')
-			}
-
 			if (!author) return null
-
 			author.born = setBornTo
-
 			try {
 				await author.save()
 			} catch (error) {
@@ -139,7 +125,7 @@ const resolvers = {
 		},
 
 		createUser: (root, args) => {
-			const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
+			const user = new User({ username: args.username })
 
 			return user.save().catch((error) => {
 				throw new UserInputError(error.message, {

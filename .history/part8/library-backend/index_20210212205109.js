@@ -126,7 +126,6 @@ const resolvers = {
 			if (!author) return null
 
 			author.born = setBornTo
-
 			try {
 				await author.save()
 			} catch (error) {
