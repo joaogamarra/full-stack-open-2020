@@ -66,6 +66,7 @@ try {
 	const { data, target } = parseArgumentsExercises(process.argv)
 	console.log(calculateExercises(data, target))
 } catch (e) {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	console.log('Error, something bad happened, message: ', e.message)
 }
 
