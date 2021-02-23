@@ -1,4 +1,4 @@
-import patients from '../../data/patients.json'
+import patients from '../../data/patients'
 import { Patient, NonSensitivePatient, NewPatient } from '../types'
 
 const getPatients = (): NonSensitivePatient[] => {
@@ -12,6 +12,7 @@ const getPatients = (): NonSensitivePatient[] => {
 }
 
 const getPatientByID = (id: string): Patient | undefined => {
+	console.log(patients)
 	return patients.find((p) => p.id === id)
 }
 
