@@ -1,6 +1,7 @@
 import express from 'express'
 import patientsService from '../services/patientsService'
 import reqPatient from '../utils'
+import { reqEntry } from '../utils'
 
 const router = express.Router()
 
@@ -26,6 +27,20 @@ router.post('/', (req, res) => {
 	} catch (e) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		res.status(400).send(e.message)
+	}
+})
+
+router.post('/:id/entries', (req, res) => {
+	const patient = patientsService.getPatientByID(req.params.id)
+	if (patient) {
+		try {
+			const newEntry = reqEntry(req.body)
+			const addedEntry = patientsService.addEntry(patient, newEntry)
+			res.json(addedEntry)
+		} catch (e) {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+			res.status(400).send(e.message)
+		}
 	}
 })
 

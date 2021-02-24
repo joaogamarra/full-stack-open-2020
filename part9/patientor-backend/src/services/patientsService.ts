@@ -1,5 +1,5 @@
 import patients from '../../data/patients'
-import { Patient, NonSensitivePatient, NewPatient } from '../types'
+import { Patient, NonSensitivePatient, NewPatient, NewEntry } from '../types'
 
 const getPatients = (): NonSensitivePatient[] => {
 	return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
@@ -12,7 +12,6 @@ const getPatients = (): NonSensitivePatient[] => {
 }
 
 const getPatientByID = (id: string): Patient | undefined => {
-	console.log(patients)
 	return patients.find((p) => p.id === id)
 }
 
@@ -27,8 +26,19 @@ const addPatient = (entry: NewPatient): Patient => {
 	return newEntry
 }
 
+const addEntry = (patient: Patient, entry: NewEntry): Patient => {
+	const newEntry = { ...entry, id: Math.floor(Math.random() * 100000).toString() }
+	const patientNewEntry = {
+		...patient,
+		entries: patient.entries.concat(newEntry),
+	}
+
+	return patientNewEntry
+}
+
 export default {
 	getPatients,
 	addPatient,
+	addEntry,
 	getPatientByID,
 }

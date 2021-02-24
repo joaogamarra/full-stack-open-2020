@@ -39,7 +39,12 @@ export type Discharge = { date: string; criteria: string }
 export interface OccupationalHealthcareEntry extends BaseEntry {
 	type: 'OccupationalHealthcare'
 	employerName: string
-	sickLeave?: { startDate: string; endDate: string }
+	sickLeave?: SickLeave
+}
+
+export type SickLeave = {
+	startDate: string
+	endDate: string
 }
 
 export enum HealthCheckRating {
@@ -53,5 +58,16 @@ export enum Gender {
 	Female = 'female',
 }
 
+export enum EntryType {
+	HealthCheck = 'HealthCheck',
+	OccupationalHealthCare = 'OccupationalHealthcare',
+	Hospital = 'Hospital',
+}
+
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>
 export type NewPatient = Omit<Patient, 'id'>
+export type NewBaseEntry = Omit<BaseEntry, 'id'>
+export type NewEntry =
+	| Omit<HospitalEntry, 'id'>
+	| Omit<OccupationalHealthcareEntry, 'id'>
+	| Omit<HealthCheckEntry, 'id'>
