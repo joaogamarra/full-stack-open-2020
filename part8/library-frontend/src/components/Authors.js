@@ -1,24 +1,6 @@
 import React, { useState } from 'react'
-import { gql, useQuery, useMutation } from '@apollo/client'
-
-const ALL_AUTHORS = gql`
-	query {
-		allAuthors {
-			name
-			born
-			bookCount
-		}
-	}
-`
-
-const EDIT_AUTHOR = gql`
-	mutation editAuthor($name: String!, $born: Int!) {
-		editAuthor(name: $name, setBornTo: $born) {
-			name
-			born
-		}
-	}
-`
+import { useQuery, useMutation } from '@apollo/client'
+import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
 const Authors = (props) => {
 	const [name, setAuthorName] = useState('')
@@ -51,7 +33,7 @@ const Authors = (props) => {
 			<table>
 				<tbody>
 					<tr>
-						<th></th>
+						<th>name</th>
 						<th>born</th>
 						<th>books</th>
 					</tr>
@@ -64,23 +46,27 @@ const Authors = (props) => {
 					))}
 				</tbody>
 			</table>
-			<h4>Set birthyear</h4>
-			<form onSubmit={handleSubmit}>
-				<select name='authorName' onChange={({ target }) => setAuthorName(target.value)}>
-					{result.data.allAuthors.map((a) => (
-						<option key={a.name} value={a.name}>
-							{a.name}
-						</option>
-					))}
-				</select>
-				<input
-					type='number'
-					name='authorBirth'
-					value={born}
-					onChange={({ target }) => setAuthorBirth(parseInt(target.value))}
-				/>
-				<input type='submit' />
-			</form>
+			{props.token && (
+				<>
+					<h4>Set birthyear</h4>
+					<form onSubmit={handleSubmit}>
+						<select name='authorName' onChange={({ target }) => setAuthorName(target.value)}>
+							{result.data.allAuthors.map((a) => (
+								<option key={a.name} value={a.name}>
+									{a.name}
+								</option>
+							))}
+						</select>
+						<input
+							type='number'
+							name='authorBirth'
+							value={born}
+							onChange={({ target }) => setAuthorBirth(parseInt(target.value))}
+						/>
+						<input type='submit' />
+					</form>
+				</>
+			)}
 		</div>
 	)
 }

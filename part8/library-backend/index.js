@@ -72,14 +72,12 @@ const JWT_SECRET = 'asfasfsadgrh5yj6ukj65jk'
 const resolvers = {
 	Query: {
 		authorCount: () => Author.collection.countDocuments(),
-		allAuthors: async () => {
-			await Author.find({})
-		},
+		allAuthors: async () => Author.find({}),
 		bookCount: () => Author.collection.countDocuments(),
 		allBooks: (root, { author, genre }) => {
 			if (author && genre) return books.filter((b) => b.author === author && b.genres.includes(genre))
 			if (author) return books.filter((b) => b.author === author)
-			if (genre) return Book.find({ genres: { $in: genre } })
+			if (genre) return Book.find({ genres: { $in: genre } }).populate('author')
 
 			return Book.find({}).populate('author')
 		},
@@ -89,23 +87,29 @@ const resolvers = {
 	},
 
 	Mutation: {
-		addBook: async (root, args) => {
-			const authorId = mongoose.Types.ObjectId()
-			const book = new Book({ ...args, author: authorId })
+		addBook: async (root, args, { currentUser }) => {
+			let author = await Author.findOne({ name: args.author })
+			let book
 
 			if (!currentUser) {
 				throw new AuthenticationError('not authenticated')
 			}
 
-			author = new Author({
-				name: args.author,
-				born: null,
-				bookCount: 1,
-				_id: authorId,
-				books: [book._id],
-			})
-			try {
+			if (author) {
+				book = new Book({ ...args, author: author._id })
+			} else {
+				const authorId = mongoose.Types.ObjectId()
+				book = new Book({ ...args, author: authorId })
+				author = new Author({
+					name: args.author,
+					born: null,
+					_id: authorId,
+				})
+
 				await author.save()
+			}
+
+			try {
 				await book.save()
 			} catch (error) {
 				throw new UserInputError(error.message, {
@@ -116,7 +120,7 @@ const resolvers = {
 			return book
 		},
 
-		editAuthor: async (root, { name, setBornTo }) => {
+		editAuthor: async (root, { name, setBornTo }, { currentUser }) => {
 			const author = await Author.findOne({ name: name })
 
 			if (!currentUser) {
@@ -164,7 +168,11 @@ const resolvers = {
 	},
 
 	Author: {
-		bookCount: ({ name }) => Book.countDocuments({ author: name }),
+		bookCount: async ({ name }) => {
+			const count = await Book.countDocuments({ author: name })
+
+			console.log(count)
+		},
 	},
 }
 
