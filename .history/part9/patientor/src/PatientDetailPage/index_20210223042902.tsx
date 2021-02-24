@@ -4,7 +4,7 @@ import axios from 'axios'
 import { apiBaseUrl } from '../constants'
 import { useParams } from 'react-router-dom'
 import { useStateValue } from '../state'
-import { Form, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { setPatientDetails, setDiagnosis } from '../state/reducer'
 
 const PatientDetailPage: React.FC = () => {
@@ -42,13 +42,13 @@ const PatientDetailPage: React.FC = () => {
 	}, [dispatch, id, patient, diagnosis])
 
 	const getDiagnoseName = (code: string) => {
-		const diagnosisLength = Object.keys(diagnosis).length
-
-		if (diagnosisLength > 0) {
-			for (let i = 0; i < diagnosisLength; i++) {
-				const item = diagnosis[i]
-				if (item.code === code) {
-					return item.name
+		console.log(diagnosis)
+		console.log(diagnosis[0])
+		if (diagnosis.length > 0) {
+			for (const object of diagnosis) {
+				if (object.code === code) {
+					console.log(object)
+					return object
 				}
 			}
 		}
@@ -78,7 +78,6 @@ const PatientDetailPage: React.FC = () => {
 					</ul>
 				</div>
 			))}
-			<Form />
 		</div>
 	)
 }

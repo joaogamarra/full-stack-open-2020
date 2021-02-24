@@ -4,8 +4,9 @@ import axios from 'axios'
 import { apiBaseUrl } from '../constants'
 import { useParams } from 'react-router-dom'
 import { useStateValue } from '../state'
-import { Form, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { setPatientDetails, setDiagnosis } from '../state/reducer'
+import { Diagnosis } from '../types'
 
 const PatientDetailPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>()
@@ -24,9 +25,9 @@ const PatientDetailPage: React.FC = () => {
 
 		const getDiagnosis = async () => {
 			try {
-				const { data: diagnosis } = await axios.get(`${apiBaseUrl}/diagnoses/`)
+				const array: Diagnosis[] = await axios.get(`${apiBaseUrl}/diagnoses/`)
 
-				dispatch(setDiagnosis(diagnosis))
+				dispatch(setDiagnosis(array))
 			} catch (e) {
 				console.error(e)
 			}
@@ -42,13 +43,11 @@ const PatientDetailPage: React.FC = () => {
 	}, [dispatch, id, patient, diagnosis])
 
 	const getDiagnoseName = (code: string) => {
-		const diagnosisLength = Object.keys(diagnosis).length
-
-		if (diagnosisLength > 0) {
-			for (let i = 0; i < diagnosisLength; i++) {
-				const item = diagnosis[i]
-				if (item.code === code) {
-					return item.name
+		if (diagnosis.length > 0) {
+			for (const object of diagnosis) {
+				if (object.code === code) {
+					console.log(object)
+					return object
 				}
 			}
 		}
@@ -78,7 +77,6 @@ const PatientDetailPage: React.FC = () => {
 					</ul>
 				</div>
 			))}
-			<Form />
 		</div>
 	)
 }

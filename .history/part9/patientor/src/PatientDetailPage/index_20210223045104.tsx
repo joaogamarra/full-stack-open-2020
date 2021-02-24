@@ -4,7 +4,7 @@ import axios from 'axios'
 import { apiBaseUrl } from '../constants'
 import { useParams } from 'react-router-dom'
 import { useStateValue } from '../state'
-import { Form, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { setPatientDetails, setDiagnosis } from '../state/reducer'
 
 const PatientDetailPage: React.FC = () => {
@@ -78,7 +78,6 @@ const PatientDetailPage: React.FC = () => {
 					</ul>
 				</div>
 			))}
-			<Form />
 		</div>
 	)
 }

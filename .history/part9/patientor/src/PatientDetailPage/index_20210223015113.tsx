@@ -4,12 +4,12 @@ import axios from 'axios'
 import { apiBaseUrl } from '../constants'
 import { useParams } from 'react-router-dom'
 import { useStateValue } from '../state'
-import { Form, Icon } from 'semantic-ui-react'
-import { setPatientDetails, setDiagnosis } from '../state/reducer'
+import { Icon } from 'semantic-ui-react'
+import { setPatientDetails } from '../state/reducer'
 
 const PatientDetailPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>()
-	const [{ patient, diagnosis }, dispatch] = useStateValue()
+	const [{ patient }, dispatch] = useStateValue()
 
 	useEffect(() => {
 		const getPatient = async () => {
@@ -22,39 +22,10 @@ const PatientDetailPage: React.FC = () => {
 			}
 		}
 
-		const getDiagnosis = async () => {
-			try {
-				const { data: diagnosis } = await axios.get(`${apiBaseUrl}/diagnoses/`)
-
-				dispatch(setDiagnosis(diagnosis))
-			} catch (e) {
-				console.error(e)
-			}
-		}
-
 		if (!patient || patient?.id !== id) {
 			getPatient()
 		}
-
-		if (!diagnosis || diagnosis.length === 0) {
-			getDiagnosis()
-		}
-	}, [dispatch, id, patient, diagnosis])
-
-	const getDiagnoseName = (code: string) => {
-		const diagnosisLength = Object.keys(diagnosis).length
-
-		if (diagnosisLength > 0) {
-			for (let i = 0; i < diagnosisLength; i++) {
-				const item = diagnosis[i]
-				if (item.code === code) {
-					return item.name
-				}
-			}
-		}
-
-		return null
-	}
+	}, [dispatch, id, patient])
 
 	return (
 		<div className='App'>
@@ -69,16 +40,8 @@ const PatientDetailPage: React.FC = () => {
 					<p>
 						{entrie.date} {entrie.description}
 					</p>
-					<ul>
-						{entrie.diagnosisCodes?.map((code) => (
-							<li key={code}>
-								{code} {getDiagnoseName(code)}
-							</li>
-						))}
-					</ul>
 				</div>
 			))}
-			<Form />
 		</div>
 	)
 }
